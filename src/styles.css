@@ -1,0 +1,18 @@
+/* styles.css (GLOBAL) */
+html, body {
+  height: 100%;
+  margin: 0;              /* <- mata el borde blanco clásico */
+  padding: 0;
+  background: #0e0e0e;    /* <- o el color que uses en tu tema oscuro */
+}
+
+/* Para que Angular ocupe todo */
+app-root {
+  display: block;
+  height: 100%;
+}
+
+/* Opcional: si no quieres scroll general */
+body {
+  overflow: hidden;
+}

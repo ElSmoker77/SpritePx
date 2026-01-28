@@ -1,0 +1,45 @@
+.box { font-family:system-ui; color:inherit; }
+
+    .tools { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 12px; }
+    button {
+      background: var(--btn,#222);
+      border:1px solid var(--btnb,#444);
+      color:inherit;
+      border-radius:10px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-size:18px;
+      line-height:1;
+    }
+    button.active { outline:2px solid #fff; outline-offset:1px; }
+
+    .row { display:flex; gap:10px; align-items:center; margin:10px 0; flex-wrap:wrap; }
+    .pill { border:1px solid var(--btnb,#444); padding:2px 8px; border-radius:999px; font-size:12px; }
+    .hint { opacity:.8; font-size:12px; }
+    .small { margin-top:12px; }
+    input[type="color"] { width:44px; height:32px; border:none; background:transparent; padding:0; }
+
+    /* Paleta */
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    .tab { font-size:12px; padding:8px 10px; border-radius:10px; }
+    .tab.active { outline:2px solid #fff; outline-offset:1px; }
+
+    .palette { display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; margin:8px 0 10px; }
+    .swatch {
+      width:40px; height:28px;
+      border-radius:10px;
+      border:1px solid var(--btnb,#444);
+      cursor:pointer;
+      padding:0;
+    }
+    .empty { font-size:12px; opacity:.75; padding:6px 0; }
+
+    .importPal {
+      display:inline-flex; gap:8px; align-items:center;
+      border:1px solid var(--btnb,#444);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .importPal input { display:none; }

@@ -1,0 +1,23 @@
+<div class="wrap">
+      <canvas #cv
+        (pointerdown)="onDown($event)"
+        (pointermove)="onMove($event)"
+        (pointerup)="onUp()"
+        (pointerleave)="onUp()"
+        style="touch-action:none;"></canvas>
+
+      <div class="bar" *ngIf="store.sourceCanvas()">
+        <label>Zoom</label>
+        <input type="range" min="0.1" max="16" step="0.05"
+          [value]="store.sourceZoom()"
+          (input)="store.setSourceZoom(+$any($event.target).value)" />
+        <span class="pill">{{store.sourceZoom() | number:'1.2-2'}}x</span>
+
+        <button (click)="resetView()">Reset</button>
+        <button (click)="ajustarAEncaje()">Encajar</button>
+      </div>
+
+      <div class="hint" *ngIf="!store.sourceCanvas()">
+        Importa una imagen como <b>Fuente</b> para verla aquí.
+      </div>
+    </div>

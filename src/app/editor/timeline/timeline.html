@@ -1,0 +1,17 @@
+<div class="wrap">
+    <div class="top">
+      <button (click)="store.addFrame()">+ Frame</button>
+      <button (click)="store.duplicateFrame()">Duplicate</button>
+      <button (click)="store.deleteFrame()">Delete</button>
+    </div>
+
+    <div class="list">
+      <div class="item"
+        *ngFor="let f of store.frames(); let i = index"
+        [class.active]="i===store.active()"
+        (click)="store.active.set(i)">
+        <canvas #thumb></canvas>
+        <div class="idx">{{i}}</div>
+      </div>
+    </div>
+  </div>

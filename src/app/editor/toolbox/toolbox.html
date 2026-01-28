@@ -1,0 +1,72 @@
+<div class="box">
+    <h3>Herramientas</h3>
+
+    <div class="tools">
+      <button title="1 Lápiz" (click)="setTool('pencil')" [class.active]="s.tool==='pencil'">✏️</button>
+      <button title="2 Goma" (click)="setTool('eraser')" [class.active]="s.tool==='eraser'">🧽</button>
+      <button title="3 Cuentagotas" (click)="setTool('picker')" [class.active]="s.tool==='picker'">🎯</button>
+      <button title="4 Relleno" (click)="setTool('fill')" [class.active]="s.tool==='fill'">🪣</button>
+      <button title="5 Lazo" (click)="setTool('lasso')" [class.active]="s.tool==='lasso'">🪢</button>
+    </div>
+
+    <div class="row">
+      <label>Color</label>
+      <input type="color" [value]="colorHex" (input)="onColor($any($event.target).value)" />
+      <span class="pill">{{toHexNoAlpha(s.color)}}</span>
+    </div>
+
+    <div class="row">
+      <label>Tamaño</label>
+      <span class="pill">{{(s.brushRadius*2+1)}}×{{(s.brushRadius*2+1)}}</span>
+      <span class="hint">(+ / -)</span>
+    </div>
+
+    <div class="row">
+      <label>Zoom</label>
+      <input type="range" min="4" max="24" [value]="s.zoom"
+        (input)="store.setZoom(+$any($event.target).value)" />
+      <span class="pill">{{s.zoom}}x</span>
+    </div>
+
+    <h3>Paleta</h3>
+
+    <div class="tabs">
+      <button class="tab" [class.active]="store.paletteMode()==='recientes'"
+        (click)="store.setPaletteMode('recientes')">
+        Recientes ({{store.recentColors().length}}/20)
+      </button>
+
+      <button class="tab" [class.active]="store.paletteMode()==='importada'"
+        (click)="store.setPaletteMode('importada')">
+        Importada ({{store.importedPalette().length}})
+      </button>
+    </div>
+
+    <div class="palette" *ngIf="store.paletteColors().length; else emptyPal">
+      <button
+        *ngFor="let c of store.paletteColors()"
+        class="swatch"
+        [title]="toHexNoAlpha(c)"
+        (click)="store.setColor(c)"
+        [style.background]="toCss(c)">
+      </button>
+    </div>
+
+    <ng-template #emptyPal>
+      <div class="empty">
+        <span *ngIf="store.paletteMode()==='importada'">No hay paleta importada.</span>
+        <span *ngIf="store.paletteMode()==='recientes'">Aún no hay colores recientes.</span>
+      </div>
+    </ng-template>
+
+    <div class="row">
+      <label class="importPal">
+        Importar paleta (.gpl / .json)
+        <input type="file" accept=".gpl,.json,.txt" (change)="importarPaleta($event)" />
+      </label>
+    </div>
+
+    <div class="row small">
+      <span class="hint">Atajos: 1..5 · Ctrl+Z · Ctrl+C · Ctrl+V (pega en el mouse)</span>
+    </div>
+  </div>

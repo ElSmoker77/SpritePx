@@ -1,0 +1,8 @@
+.wrap { color:#ddd; }
+    .top { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+    button { background:#222; color:#ddd; border:1px solid #444; padding:6px 10px; cursor:pointer; border-radius:6px; }
+    .list { display:flex; gap:8px; overflow:auto; padding:6px; border:1px solid #333; border-radius:8px; }
+    .item { cursor:pointer; border:1px solid #444; border-radius:8px; padding:6px; background:#161616; }
+    .item.active { border-color:#fff; }
+    canvas { width:64px; height:64px; image-rendering: pixelated; background:#111; border:1px solid #333; }
+    .idx { text-align:center; font-size:12px; opacity:0.8; margin-top:4px; }

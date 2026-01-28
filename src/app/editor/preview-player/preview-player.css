@@ -1,0 +1,25 @@
+canvas {
+      width:160px; height:160px;
+      image-rendering: pixelated;
+      background:#111;
+      border:1px solid #333;
+      border-radius:8px;
+    }
+    .row {
+      display:flex; gap:10px;
+      align-items:center;
+      margin-top:8px;
+      color:inherit;
+      font-family:system-ui;
+      font-size:13px;
+      flex-wrap:wrap;
+    }
+    button {
+      background: var(--btn, #222);
+      color: inherit;
+      border:1px solid var(--btnb, #444);
+      padding:6px 10px;
+      cursor:pointer;
+      border-radius:6px;
+    }
+    input[type="number"] { width:80px; }

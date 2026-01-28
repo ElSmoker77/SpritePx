@@ -1,0 +1,209 @@
+<div class="layout" [attr.data-tema]="store.state().tema">
+
+    <!-- IZQUIERDA -->
+    <aside class="left">
+      <div class="leftHeader">
+        <div class="brand">
+          <span class="logo">🧩</span>
+          <div class="txt">
+            <div class="name">SpritePX</div>
+            <div class="tag">Editor de sprites</div>
+          </div>
+        </div>
+
+        <div class="theme">
+          <select
+            [value]="store.state().tema"
+            (change)="store.setTema($any($event.target).value)">
+            <option value="oscuro">Oscuro</option>
+            <option value="claro">Claro</option>
+            <option value="gris">Gris</option>
+            <option value="verde">Verde oscuro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <toolbox></toolbox>
+    </aside>
+
+    <!-- CENTRO -->
+    <main class="center">
+      <pixel-canvas></pixel-canvas>
+      <div class="bottom">
+        <timeline></timeline>
+      </div>
+    </main>
+
+    <!-- DERECHA -->
+    <aside class="right">
+      <section class="accordion">
+
+        <!-- Visualización -->
+        <div class="accItem" [class.open]="isOpen('vis')">
+          <button class="accHead" (click)="toggle('vis')">
+            <span class="accTitle">Visualización</span>
+            <span class="accMeta">Grid: {{ store.state().showGrid ? 'On' : 'Off' }}</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <div class="row">
+              <label class="chk">
+                <input type="checkbox" [checked]="store.state().showGrid" (change)="store.toggleGrid()">
+                Cuadrícula
+              </label>
+            </div>
+
+            <div class="row">
+              <label class="chk">
+                <input type="checkbox" [checked]="store.state().onionPrev" (change)="store.toggleOnionPrev()">
+                Fantasma anterior
+              </label>
+              <label class="chk">
+                <input type="checkbox" [checked]="store.state().onionNext" (change)="store.toggleOnionNext()">
+                Fantasma siguiente
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lienzo -->
+        <div class="accItem" [class.open]="isOpen('canvas')">
+          <button class="accHead" (click)="toggle('canvas')">
+            <span class="accTitle">Lienzo</span>
+            <span class="accMeta">{{ store.state().w }}×{{ store.state().h }}</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <div class="row">
+              <label>Ancho</label>
+              <input type="number" min="8" max="512"
+                [value]="canvasW"
+                (input)="canvasW = +$any($event.target).value" />
+
+              <label>Alto</label>
+              <input type="number" min="8" max="512"
+                [value]="canvasH"
+                (input)="canvasH = +$any($event.target).value" />
+            </div>
+
+            <div class="row">
+              <button class="btnFull" (click)="aplicarCanvasSize()">
+                Aplicar tamaño
+              </button>
+            </div>
+
+            <div class="row small">
+              <span class="hint">Tip: Esto redimensiona TODOS los fotogramas.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista previa -->
+        <div class="accItem" [class.open]="isOpen('preview')">
+          <button class="accHead" (click)="toggle('preview')">
+            <span class="accTitle">Vista previa</span>
+            <span class="accMeta">{{ store.state().fps }} fps</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <preview-player></preview-player>
+
+            <div class="row">
+              <label>Transparencia</label>
+              <input type="range" min="0" max="1" step="0.05"
+                [value]="store.state().onionOpacity"
+                (input)="store.setOnionOpacity(+$any($event.target).value)" />
+              <span class="pill">{{store.state().onionOpacity}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fuente -->
+        <div class="accItem" [class.open]="isOpen('source')">
+          <button class="accHead" (click)="toggle('source')">
+            <span class="accTitle">Fuente</span>
+            <span class="accMeta">
+              {{ store.sourceCanvas() ? (store.sourceW() + '×' + store.sourceH()) : '—' }}
+            </span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <source-viewer></source-viewer>
+
+            <div class="row">
+              <button class="btnFull" (click)="recortarAFrame(false)" [disabled]="!store.sourceCanvas()">
+                Recortar al fotograma activo
+              </button>
+            </div>
+
+            <div class="row">
+              <button class="btnFull" (click)="recortarAFrame(true)" [disabled]="!store.sourceCanvas()">
+                Recortar como nuevo fotograma
+              </button>
+            </div>
+
+            <div class="row small">
+              <span class="hint">Tip: Pan con ALT+arrastrar o botón medio. Selecciona con click+arrastrar.</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ✅ Importar (SOLO Fuente) -->
+        <div class="accItem" [class.open]="isOpen('import')">
+          <button class="accHead" (click)="toggle('import')">
+            <span class="accTitle">Importar</span>
+            <span class="accMeta">Solo Fuente</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <div class="row">
+              <div class="sub">Importar como Fuente (grande, para recortar)</div>
+              <input type="file" accept="image/*" (change)="importarComoFuente($event)" />
+            </div>
+
+            <div class="row small">
+              <span class="hint">Después recortas desde “Fuente” al fotograma activo o como nuevo.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exportar -->
+        <div class="accItem" [class.open]="isOpen('export')">
+          <button class="accHead" (click)="toggle('export')">
+            <span class="accTitle">Exportar</span>
+            <span class="accMeta">Spritesheet</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <button class="btnFull" (click)="exportarSpritesheet()">Exportar spritesheet</button>
+          </div>
+        </div>
+
+        <!-- Avisos -->
+        <div class="accItem" *ngIf="store.uiAviso() as msg" [class.open]="isOpen('aviso')">
+          <button class="accHead" (click)="toggle('aviso')">
+            <span class="accTitle">Aviso</span>
+            <span class="accMeta">1</span>
+            <span class="accChevron">▾</span>
+          </button>
+
+          <div class="accBody">
+            <div class="avisoRow">
+              <div class="msg">{{msg}}</div>
+              <button (click)="store.setAviso(null)">Cerrar</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </aside>
+  </div>

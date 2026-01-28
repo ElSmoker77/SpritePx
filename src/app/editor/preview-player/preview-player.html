@@ -1,0 +1,16 @@
+<div class="wrap">
+    <canvas #p></canvas>
+
+    <div class="row">
+      <button (click)="toggle()">{{reproduciendo ? 'Pausar' : 'Reproducir'}}</button>
+      <span>Fotogramas: {{store.frames().length}}</span>
+    </div>
+
+    <!-- FPS debajo de la vista -->
+    <div class="row">
+      <label>FPS</label>
+      <input type="number" min="1" max="60"
+        [value]="store.state().fps"
+        (input)="store.setFps(+$any($event.target).value)" />
+    </div>
+  </div>
